@@ -7,7 +7,7 @@ import { DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET } from '@env';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 WebBrowser.maybeCompleteAuthSession();
-const DEFAULT_AVATAR_URL = 'https://yt3.googleusercontent.com/vRF8BHREiJ3Y16AbMxEi_oEuoQlnNNqGpgULuZ6zrWSAi24HcxX3Vko42RN8ToctH-G0qlWd=s160-c-k-c0x00ffffff-no-rj'; 
+const DEFAULT_AVATAR_URL = 'https://yt3.googleusercontent.com/vRF8BHREiJ3Y16AbMxEi_oEuoQlnNNqGpgULuZ6zrWSAi24HcxX3Vko42RN8ToctH-G0qlWd=s160-c-k-c0x00ffffff-no-rj';
 const discovery = {
   authorizationEndpoint: 'https://discord.com/api/oauth2/authorize',
   tokenEndpoint: 'https://discord.com/api/oauth2/token',
@@ -49,7 +49,7 @@ export default function App() {
       });
 
       const data = await response.json();
-      
+
       if (data.access_token) {
         await fetchUserInfo(data.access_token);
         await AsyncStorage.setItem('access_token', data.access_token);
@@ -65,72 +65,72 @@ export default function App() {
     try {
       const res = await fetch('https://discord.com/api/users/@me', {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: Bearer ${ token },
         },
-      });
-      const data = await res.json();
-      setUser(data);
-      await AsyncStorage.setItem('user', JSON.stringify(data));
-    } catch (error) {
-      console.error("Error al obtener información del usuario:", error);
-    }
+  });
+  const data = await res.json();
+  setUser(data);
+  await AsyncStorage.setItem('user', JSON.stringify(data));
+} catch (error) {
+  console.error("Error al obtener información del usuario:", error);
+}
   };
 
-  const logout = async () => {
-    await AsyncStorage.removeItem('access_token');
-    await AsyncStorage.removeItem('user');
-    setUser(null);
-  };
+const logout = async () => {
+  await AsyncStorage.removeItem('access_token');
+  await AsyncStorage.removeItem('user');
+  setUser(null);
+};
 
-  useEffect(() => {
-    const getStoredUser = async () => {
-      const storedUser = await AsyncStorage.getItem('user');
-      const token = await AsyncStorage.getItem('access_token');
+useEffect(() => {
+  const getStoredUser = async () => {
+    const storedUser = await AsyncStorage.getItem('user');
+    const token = await AsyncStorage.getItem('access_token');
 
-      if (storedUser && token) {
-        setUser(JSON.parse(storedUser));
-      }
-    };
-    getStoredUser();
-  }, []);
-
-  useEffect(() => {
-    if (response?.type === 'success') {
-      const { code } = response.params;
-      exchangeCodeForToken(code, request.codeVerifier);
+    if (storedUser && token) {
+      setUser(JSON.parse(storedUser));
     }
-  }, [response]);
+  };
+  getStoredUser();
+}, []);
 
-  return (
-    <View style={styles.container}>
-      {user ? (
-        <View style={styles.profileContainer}>
-     
-          <Image
-  source={{
-    uri: user.avatar
-      ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+useEffect(() => {
+  if (response?.type === 'success') {
+    const { code } = response.params;
+    exchangeCodeForToken(code, request.codeVerifier);
+  }
+}, [response]);
+
+return (
+  <View style={styles.container}>
+    {user ? (
+      <View style={styles.profileContainer}>
+
+        <Image
+          source={{
+            uri: user.avatar
+              ? https ://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png
       : DEFAULT_AVATAR_URL,
   }}
-  style={styles.avatar}
+        style={styles.avatar}
 />
-          <Text style={styles.profileName}>{user.username}</Text>
-     
-          <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-            <Text style={styles.logoutButtonText}>Cerrar sesión</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <View style={styles.loginContainer}>
-  
-          <TouchableOpacity style={styles.loginButton} onPress={() => promptAsync()} disabled={!request}>
-        
-            <Text style={styles.loginButtonText}>Iniciar sesión con Discord</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-    </View>
-  );
+        <Text style={styles.profileName}>{user.username}</Text>
+
+        <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+          <Text style={styles.logoutButtonText}>Cerrar sesión</Text>
+        </TouchableOpacity>
+      </View>
+    ) : (
+      <View style={styles.loginContainer}>
+
+        <TouchableOpacity style={styles.loginButton} onPress={() => promptAsync()} disabled={!request}>
+
+          <Text style={styles.loginButtonText}>Iniciar sesión con Discord</Text>
+        </TouchableOpacity>
+      </View>
+    )}
+  </View>
+);
 }
 
 const styles = StyleSheet.create({
