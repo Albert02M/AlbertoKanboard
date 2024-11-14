@@ -65,7 +65,7 @@ export default function App() {
     try {
       const res = await fetch('https://discord.com/api/users/@me', {
         headers: {
-          Authorization: Bearer ${token},
+          Authorization: `Bearer ${token}`,
         },
       });
       const data = await res.json();
@@ -109,7 +109,7 @@ export default function App() {
           <Image
   source={{
     uri: user.avatar
-      ? https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png
+      ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
       : DEFAULT_AVATAR_URL,
   }}
   style={styles.avatar}
